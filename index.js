@@ -6,10 +6,14 @@ window.onload = () => {
     db.settings({ timestampsInSnapshots: true });
     let infoTextDiv = document.getElementById('info-text');
 
+    let gdprCheckbox = document.getElementById('gdpr-checkbox')
+
+
     saveEmailButton.onclick = () => {
         let email = emailInput.value;
+        let isGdprChecked = gdprCheckbox.checked;
 
-        if (email && !isSaving) {
+        if (email && !isSaving && isGdprChecked) {
             isSaving = true;
             saveEmailButton.hidden = true;
             infoTextDiv.textContent = 'Saving...';
@@ -26,7 +30,10 @@ window.onload = () => {
             .finally(() => {
                 emailInput.value = '';
                 isSaving = false;
+                gdprCheckbox.checked = false;
             });
+        } else if (!isGdprChecked) {
+            infoTextDiv.textContent = 'Please check the checkbox below';
         }
     };
 };
